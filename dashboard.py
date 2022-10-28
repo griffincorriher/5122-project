@@ -4,16 +4,12 @@ import pandas as pd
 
 app = Dash(__name__)
 
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
+df = pd.read_csv('data/Sample - Superstore.csv')
 
-fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
+fig = px.histogram(df, x="Category", y="Profit", color="Segment", barmode="group")
 
 app.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
+    html.H1(children='Superstore Dashboard'),
 
     html.Div(children='''
         Dash: A web application framework for your data.
