@@ -49,6 +49,11 @@ metric_of_interest.sort()
 fig = px.histogram(df, x="Category", y="Profit", color="Segment", barmode="group")
 
 app.layout = html.Div([
+    html.Div(children=[
+        dcc.RangeSlider(0, 20, 1,
+        value=[5, 15], id='my-slider'),
+        html.Div(id='slider-output-container')
+        ]),  
     html.Div(
         className='row1',
         children=[
@@ -130,6 +135,13 @@ app.layout = html.Div([
 
 
 ], style={"margin": 15, 'max-width' : 1458, 'color': 'white'})
+
+@app.callback(
+    Output(component_id='slider-output-container', component_property='children'),
+    Input(component_id='my-slider', component_property='value'))
+def update_output(value):
+    return 'You have selected "{}"'.format(value)
+
 
 @app.callback(
     Output(component_id='area-dropdown', component_property='options'),
