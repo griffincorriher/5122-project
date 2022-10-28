@@ -1,4 +1,5 @@
 from dash import Dash, html, dcc
+from dash.dependencies import Input, Output
 import plotly.express as px
 import pandas as pd
 
@@ -46,17 +47,20 @@ app.layout = html.Div([
                 ], style={'display': 'inline-block', 'padding': 20, 'width': 446, 'height': 200, 'background-color': '#245C8C', 'vertical-align': 'top', 'font-size': 20}
             ),
             
-            html.Div(children=[
+            html.Div(
+                children=[
                 html.H5('Area of Interest'),
-                dcc.RadioItems(area_of_interest, 'Country'),
+                dcc.RadioItems(
+                    id='area-radio',
+                    options=[{'label': area, 'value': area} for area in area_of_interest],
+                    value = area_of_interest[2]),
                 ], style={'display': 'inline-block', 'padding': 20, 'width': 446, 'height': 200, 'background-color': '#5494B4', 'vertical-align': 'top', 'font-size': 20}
             ),
 
-            html.Div(children=[
+            html.Div(
+                children=[
                 html.H5('Select Area(s)'),
-                dcc.Dropdown(countries,
-                            countries[0],
-                            multi = True)
+                dcc.Dropdown(id='area-dropdown')
                 ], style={'display': 'inline-block', 'padding': 20, 'width': 446, 'height': 200, 'background-color': '#6CA4C4', 'vertical-align': 'top', 'font-size': 20}
             ),            
         ]
@@ -65,7 +69,8 @@ app.layout = html.Div([
     html.Div(
         className='row2',
         children=[
-            html.Div(children=[
+            html.Div(
+                children=[
                 html.H5('Segments of Interest'),
                 dcc.Checklist(segments, [segments[0], segments[1], segments[2]]),
                 ], style={'display': 'inline-block', 'padding': 20, 'width': 446, 'height': 200, 'background-color': '#6CA4C4', 'vertical-align': 'top', 'font-size': 20}
@@ -78,10 +83,14 @@ app.layout = html.Div([
                 ], style={'display': 'inline-block', 'padding': 20, 'width': 446, 'height': 200, 'color': 'black',  'background-color': '#84B4CC', 'vertical-align': 'top', 'font-size': 20}
             ),
 
-            html.Div(children=[
+            html.Div(
+                children=[
                 html.H5('Select Product(s)'),
-                dcc.Dropdown(products,
-                            multi = True)
+                dcc.Dropdown(
+                            id='product-dropdown',
+                            options=[{'label': product, 'value': product} for product in products],
+                            multi = True
+                            ),
                 ], style={'display': 'inline-block', 'padding': 20, 'width': 446, 'height': 200, 'color': 'black', 'background-color': '#E6E6E6', 'vertical-align': 'top'}
             ),            
         ]
@@ -97,6 +106,7 @@ app.layout = html.Div([
 
             html.Div(children=[
                 html.H5('ML Recommendation Placeholder'),
+                html.Div(id='display-selected-values')
                 ], style={'display': 'inline-block', 'padding': 20, 'width': 446, 'height': 500, 'color': 'black',  'background-color': '#C0C0C0', 'vertical-align': 'top', 'font-size': 20}
             ),            
         ],
@@ -105,7 +115,23 @@ app.layout = html.Div([
 
 ], style={"margin": 15, 'max-width' : 1458, 'color': 'white'})
 
+@app.callback(
+    Output(component_id='area-dropdown', component_property='options'),
+    Input(component_id='area-radio', component_property='value')
+)
+def update_date_dropdown(area):
+    return [{'label': i, 'value': i} for i in area_of_interest[area]]
+
+
+
+@app.callback(
+    Output(component_id='display-selected-values', component_property='children'),
+    Input(component_id='area-dropdown', component_property='value')
+)
+def update_date_dropdown(selected_value):
+    return 'you have selected {} option'.format(selected_value)
+
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-
