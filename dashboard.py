@@ -45,15 +45,24 @@ ship_mode = df['Ship Mode'].unique()
 metric_of_interest = ['Sales', 'Discount', 'Profit', 'Profit per Item', 'Shipping Speed']
 metric_of_interest.sort()
 
+df['Order Year'] = pd.DatetimeIndex(df['Order Date'].astype('datetime64[ns]')).year
+df['Ship Year'] = pd.DatetimeIndex(df['Ship Date'].astype('datetime64[ns]')).year
 
 fig = px.histogram(df, x="Category", y="Profit", color="Segment", barmode="group")
 
 app.layout = html.Div([
     html.Div(children=[
-        dcc.RangeSlider(0, 20, 1,
-        value=[5, 15], id='my-slider'),
+        dcc.RangeSlider(
+            min(df['Order Year']),
+            max(df['Order Year']), 1,
+            value=[max(df['Order Year'])-2, max(df['Order Year'])],
+            id='my-slider',
+            dots=True,
+            marks={i: '{}'.format(i) for i in range(min(df['Order Year']), max(df['Order Year'])+1, 1)},
+            ),
         html.Div(id='slider-output-container')
-        ]),  
+        ], style = {'color':'black'}
+    ),  
     html.Div(
         className='row1',
         children=[
