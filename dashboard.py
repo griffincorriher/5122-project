@@ -1,3 +1,4 @@
+from re import S
 from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 import plotly.express as px
@@ -21,12 +22,24 @@ products = df['Product Name'].unique()
 products.sort()
 
 countries = df['Country'].unique()
+countries.sort()
 regions = df['Region'].unique()
+regions.sort()
 states = df['State'].unique()
+states.sort()
 cities = df['City'].unique()
+cities.sort()
 postal_code = df['Postal Code'].unique()
-area_of_interest = ['Area Code', 'City', 'State', 'Region', 'Country']
+postal_code.sort()
+area_of_interest = ['Postal Code', 'City', 'State', 'Region', 'Country']
 area_of_interest.sort()
+area_dict = {
+    'Postal Code': postal_code,
+    'City': cities,
+    'State': states,
+    'Region': regions,
+    'Country': countries
+}
 
 ship_mode = df['Ship Mode'].unique()
 metric_of_interest = ['Sales', 'Discount', 'Profit', 'Profit per Item', 'Shipping Speed']
@@ -53,14 +66,17 @@ app.layout = html.Div([
                 dcc.RadioItems(
                     id='area-radio',
                     options=[{'label': area, 'value': area} for area in area_of_interest],
-                    value = area_of_interest[2]),
+                    value = area_of_interest[1]),
                 ], style={'display': 'inline-block', 'padding': 20, 'width': 446, 'height': 200, 'background-color': '#5494B4', 'vertical-align': 'top', 'font-size': 20}
             ),
 
             html.Div(
                 children=[
                 html.H5('Select Area(s)'),
-                dcc.Dropdown(id='area-dropdown')
+                dcc.Dropdown(
+                    id='area-dropdown',
+                    style={'color': 'black'},
+                    multi=True)
                 ], style={'display': 'inline-block', 'padding': 20, 'width': 446, 'height': 200, 'background-color': '#6CA4C4', 'vertical-align': 'top', 'font-size': 20}
             ),            
         ]
@@ -73,7 +89,7 @@ app.layout = html.Div([
                 children=[
                 html.H5('Segments of Interest'),
                 dcc.Checklist(segments, [segments[0], segments[1], segments[2]]),
-                ], style={'display': 'inline-block', 'padding': 20, 'width': 446, 'height': 200, 'background-color': '#6CA4C4', 'vertical-align': 'top', 'font-size': 20}
+                ], style={'display': 'inline-block', 'padding': 20, 'width': 446, 'height': 200, 'color': 'black', 'background-color': '#6CA4C4', 'vertical-align': 'top', 'font-size': 20}
             ),   
 
             html.Div(
@@ -120,7 +136,7 @@ app.layout = html.Div([
     Input(component_id='area-radio', component_property='value')
 )
 def update_date_dropdown(area):
-    return [{'label': i, 'value': i} for i in area_of_interest[area]]
+    return [{'label': i, 'value': i} for i in area_dict[area]]
 
 
 
@@ -128,7 +144,7 @@ def update_date_dropdown(area):
     Output(component_id='display-selected-values', component_property='children'),
     Input(component_id='area-dropdown', component_property='value')
 )
-def update_date_dropdown(selected_value):
+def set_display_children(selected_value):
     return 'you have selected {} option'.format(selected_value)
 
 
