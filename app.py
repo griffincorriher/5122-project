@@ -2,15 +2,6 @@ app = Dash(__name__)
 
 app.layout = html.Div([
     html.Div(children=[
-        html.Label('Dropdown'),
-        dcc.Dropdown(['New York City', 'Montréal', 'San Francisco'], 'Montréal'),
-
-        html.Br(),
-        html.Label('Multi-Select Dropdown'),
-        dcc.Dropdown(['New York City', 'Montréal', 'San Francisco'],
-                     ['Montréal', 'San Francisco'],
-                     multi=True),
-
         html.Br(),
         html.Label('Radio Items'),
         dcc.RadioItems(['New York City', 'Montréal', 'San Francisco'], 'Montréal'),
@@ -21,11 +12,7 @@ app.layout = html.Div([
         dcc.Checklist(['New York City', 'Montréal', 'San Francisco'],
                       ['Montréal', 'San Francisco']
         ),
-
-        html.Br(),
-        html.Label('Text Input'),
-        dcc.Input(value='MTL', type='text'),
-
+        
         html.Br(),
         html.Label('Slider'),
         dcc.Slider(
