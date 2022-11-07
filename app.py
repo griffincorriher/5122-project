@@ -2,41 +2,46 @@ import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
 
-df = pd.read_csv('data/Sample - Superstore.csv')
+st.set_page_config(layout="wide")
 
-components.html(
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <div id="accordion">
-      <div class="card">
-        <div class="card-header" id="headingOne">
-          <h5 class="mb-0">
-            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            Collapsible Group Item #1
-            </button>
-          </h5>
-        </div>
-        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-          <div class="card-body">
-            Collapsible Group Item #1 content
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header" id="headingTwo">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-            Collapsible Group Item #2
-            </button>
-          </h5>
-        </div>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-          <div class="card-body">
-            Collapsible Group Item #2 content
-          </div>
-        </div>
-      </div>
-    </div>,
-    height=600,
-)
+df = pd.read_csv('data/Sample - Superstore.csv')
+df
+
+with st.container():
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.header("Metrics of Interest")
+        st.image("https://static.streamlit.io/examples/cat.jpg")
+
+    with col2:
+        st.header("Area of Interest")
+        st.image("https://static.streamlit.io/examples/dog.jpg")
+
+    with col3:
+        st.header("Select Area(s)")
+        st.image("https://static.streamlit.io/examples/owl.jpg")
+
+with st.container():
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.header("Segments of Interest")
+        st.image("https://static.streamlit.io/examples/cat.jpg")
+
+    with col2:
+        st.header("Category of Interest")
+        st.image("https://static.streamlit.io/examples/dog.jpg")
+
+    with col3:
+        st.header("Select Product(s)")
+        st.image("https://static.streamlit.io/examples/owl.jpg")
+
+with st.container():
+    col1, col2= st.columns([2,1])
+    with col1:
+        st.header("Chart Placeholder")
+        st.line_chart(data=df, x='Sales', y='Profit')
+
+    with col2:
+        st.header("ML Recommendation Placeholder")
+        st.image("https://static.streamlit.io/examples/dog.jpg")
